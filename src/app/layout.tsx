@@ -5,6 +5,8 @@ import { Inter } from "next/font/google";
 import Providers from "@/components/providers";
 import { Toaster } from "@/components/ui/sonner";
 
+import Navbar from '@/components/navbar';
+
 const inter = Inter({
   subsets: ["latin"],
   variable: "--font-sans",
@@ -25,7 +27,10 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body className={`font-sans ${inter.variable}`}>
         <Providers>
-          {children}
+          <Navbar />
+          <div className="container max-w-7xl mx-auto">
+            {children}
+          </div>
           <Toaster />
         </Providers>
       </body>
