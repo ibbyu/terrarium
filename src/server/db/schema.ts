@@ -35,20 +35,6 @@ export const posts = createTable(
   })
 );
 
-export const users = createTable("user", {
-  id: text("id", { length: 255 }).notNull().primaryKey(),
-  name: text("name", { length: 255 }),
-  email: text("email", { length: 255 }).notNull(),
-  emailVerified: int("emailVerified", {
-    mode: "timestamp",
-  }).default(sql`CURRENT_TIMESTAMP`),
-  image: text("image", { length: 255 }),
-});
-
-export const usersRelations = relations(users, ({ many }) => ({
-  accounts: many(accounts),
-}));
-
 export const accounts = createTable(
   "account",
   {
@@ -109,3 +95,40 @@ export const verificationTokens = createTable(
     compoundKey: primaryKey({ columns: [vt.identifier, vt.token] }),
   })
 );
+
+export const users = createTable("user", {
+  id: text("id", { length: 255 }).notNull().primaryKey(),
+  name: text("name", { length: 255 }),
+  email: text("email", { length: 255 }).notNull(),
+  emailVerified: int("emailVerified", {
+    mode: "timestamp",
+  }).default(sql`CURRENT_TIMESTAMP`),
+  image: text("image", { length: 255 }),
+  joinedAt: text('joinedAt').default(sql`(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))`).notNull()
+});
+
+export const usersRelations = relations(users, ({ many }) => ({
+  accounts: many(accounts),
+}));
+
+export const mods = createTable("mod", {
+  id: text("id", { length: 255 }).notNull().primaryKey(),
+  slug: text("slug", { length: 255 }).notNull().unique(),
+  name: text("name", { length: 255 }).notNull(),
+  summary: text("summary", { length: 255 }).notNull(),
+  icon: text("icon", { length: 255 }),
+  description: text("description"),
+  draft: int("draft").default(1),
+  approved: int("approved").default(0),
+  createdAt: text('createdAt').default(sql`(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))`).notNull(),
+  updatedAt: text('updatedAt').default(sql`(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))`).notNull(),
+  downloads: int("downloads").default(0),
+  ownerId: text("ownerId", { length: 255 }).references(() => users.id, { onDelete: "cascade"})
+});
+
+export const modRelations = relations(mods, ({ one }) => ({
+  owner: one(users, {
+    fields: [mods.ownerId],
+    references: [users.id]
+  })
+}));

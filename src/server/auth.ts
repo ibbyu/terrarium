@@ -1,3 +1,8 @@
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
+/* eslint-disable @typescript-eslint/ban-ts-comment */
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { DrizzleAdapter } from "@auth/drizzle-adapter";
 import {
   getServerSession,
@@ -29,9 +34,21 @@ export const authOptions: NextAuthOptions = {
     }),
     GitHubProvider({
       clientId: env.GITHUB_ID,
-      clientSecret: env.GITHUB_SECRET
+      clientSecret: env.GITHUB_SECRET,
+      // @ts-expect-error
+      profile(profile) {
+        return {
+          id: profile.id.toString(),
+          name: profile.login ?? profile.name,
+          email: profile.email,
+          image: profile.avatar_url,
+        }
+      }
     }),
   ],
+  pages: {
+    signIn: "/sign-in"
+  }
 };
 
 export const getServerAuthSession = () => getServerSession(authOptions);

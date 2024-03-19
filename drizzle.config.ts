@@ -6,7 +6,7 @@ export default {
   schema: "./src/server/db/schema.ts",
   driver: "better-sqlite",
   dbCredentials: {
-    url: env.DATABASE_URL,
+    url: env.NODE_ENV === "production" ? env.DATABASE_URL : env.LOCAL_DATABASE_URL,
   },
   tablesFilter: ["terrarium_*"],
 } satisfies Config;

@@ -39,7 +39,8 @@ const config = {
       }
     ],
     "drizzle/enforce-delete-with-where": "error",
-    "drizzle/enforce-update-with-where": "error"
+    "drizzle/enforce-update-with-where": "error",
+    "@typescript-eslint/no-empty-interface": "off",
   }
 }
 module.exports = config;
