@@ -49,7 +49,7 @@ const NewModForm = () => {
       if (response.ok) {
         toast.success("Mod created");
         router.refresh();
-        // router.push(`/dashboard/${data.slug}`);
+        router.push(`/dashboard/${data.slug}`);
       }
       else {
         setMessage(data.errorMessage);

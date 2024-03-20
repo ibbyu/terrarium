@@ -98,7 +98,7 @@ export const verificationTokens = createTable(
 
 export const users = createTable("user", {
   id: text("id", { length: 255 }).notNull().primaryKey(),
-  name: text("name", { length: 255 }),
+  name: text("name", { length: 255 }).notNull(),
   email: text("email", { length: 255 }).notNull(),
   emailVerified: int("emailVerified", {
     mode: "timestamp",
@@ -119,8 +119,8 @@ export const mods = createTable("mod", {
   summary: text("summary", { length: 255 }).notNull(),
   icon: text("icon", { length: 255 }),
   description: text("description"),
-  draft: int("draft").default(1),
-  approved: int("approved").default(0),
+  draft: int("draft").default(1).notNull(),
+  approved: int("approved").default(0).notNull(),
   createdAt: text('createdAt').default(sql`(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))`).notNull(),
   updatedAt: text('updatedAt').default(sql`(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))`).notNull(),
   downloads: int("downloads").default(0).notNull(),
