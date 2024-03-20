@@ -123,7 +123,7 @@ export const mods = createTable("mod", {
   approved: int("approved").default(0),
   createdAt: text('createdAt').default(sql`(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))`).notNull(),
   updatedAt: text('updatedAt').default(sql`(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))`).notNull(),
-  downloads: int("downloads").default(0),
+  downloads: int("downloads").default(0).notNull(),
   ownerId: text("ownerId", { length: 255 }).references(() => users.id, { onDelete: "cascade"})
 });
 

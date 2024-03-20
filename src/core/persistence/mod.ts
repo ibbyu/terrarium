@@ -15,3 +15,13 @@ export async function getModBySlug(slug: string) {
 export async function createNewMod(mod: { id: string, name: string, slug: string, ownerId: string, summary: string }) {
   await db.insert(mods).values({...mod})
 }
+
+export async function getModsByQueryWithOwner(query?: string, limit = 10) {
+  return await db.query.mods.findMany({
+    limit,
+    where: query ? (mods, { like }) => like(mods.name, `%${query}%`) : undefined,
+    with: {
+      owner: true,
+    }
+  });
+}
