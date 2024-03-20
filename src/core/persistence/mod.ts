@@ -58,5 +58,21 @@ export async function getModsByQueryWithOwner(query?: string, limit = 10) {
 }
 
 export async function updateModSummaryById(id: string, summary: string) {
+  if (!id) {
+    throw new Error("id parameter is undefined");
+  }
+
+  if (!summary) {
+    throw new Error("summary parameter is undefined");
+  }
+
   await db.update(mods).set({ summary }).where(eq(mods.id, id));
+}
+
+export async function updateModDescriptionById(id: string, description: string) {
+  if (!id) {
+    throw new Error("id parameter is undefined");
+  }
+
+  await db.update(mods).set({ description }).where(eq(mods.id, id));
 }

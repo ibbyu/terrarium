@@ -41,7 +41,7 @@ const ModCard = ({ name, icon, summary, slug }: Props) => {
               </div>
             </DropdownMenuTrigger>
             <DropdownMenuContent>
-              <Link href={`/dashboard/mod/${slug}/settings`}>
+              <Link href={`/dashboard/${slug}/settings`}>
                 <DropdownMenuItem className='hover:cursor-pointer'>
                   Settings
                 </DropdownMenuItem>

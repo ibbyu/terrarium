@@ -1,7 +1,14 @@
 import { v4 as uuidv4 } from 'uuid';
 import { logger } from "@/lib/winston";
 import { toSlugCase } from "@/core/common/utils";
-import { createNewMod, deleteModById, getModById, getModBySlug, updateModSummaryById } from "@/core/persistence/mod";
+import { 
+  createNewMod,
+  deleteModById,
+  getModById,
+  getModBySlug,
+  updateModDescriptionById,
+  updateModSummaryById 
+} from "@/core/persistence/mod";
 
 interface CreateNewModResult {
   alreadyExists?: string;
@@ -74,14 +81,14 @@ export async function deleteModService({ modId, userId } : { modId: string, user
   }
 }
 
-interface DeleteModResult {
+interface UpdateModSummaryResult {
   doesNotExist?: string;
   error?: string;
   unauthorized?: string;
 }
 
 
-export async function updateModSummaryService({ modId, userId, summary } : { modId: string, userId: string, summary: string }): Promise<DeleteModResult> {
+export async function updateModSummaryService({ modId, userId, summary } : { modId: string, userId: string, summary: string }): Promise<UpdateModSummaryResult> {
   try {
     const mod = await getModById(modId);
 
@@ -106,6 +113,42 @@ export async function updateModSummaryService({ modId, userId, summary } : { mod
 
   catch(e) {
     logger.error("Failed to update mod summary. An exception occurred: ", e);
+
+    return { error: "An unexpected error occurred" };
+  }
+}
+interface UpdateModDescriptionResult {
+  doesNotExist?: string;
+  error?: string;
+  unauthorized?: string;
+}
+
+
+export async function updateModDescriptionService({ modId, userId, description } : { modId: string, userId: string, description: string }): Promise<UpdateModDescriptionResult> {
+  try {
+    const mod = await getModById(modId);
+
+    if (!mod) {
+      logger.info(`Failed to update mod description. Mod does not exists. User Id: '${userId}'`);
+
+      return { doesNotExist: "This mod does not exist" };
+    }
+
+    if (mod.ownerId !== userId) {
+      logger.info(`Failed to update mod description. Unauthorized. User Id: '${userId}', Mod name: ${mod.name}`);
+
+      return { unauthorized: "Unauthorized" };
+    }
+
+    logger.info(`Mod description updated. User Id: '${userId}', Mod name: ${mod.name}`);
+    
+    await updateModDescriptionById(modId, description);
+
+    return {};
+  }
+
+  catch(e) {
+    logger.error("Failed to update mod description. An exception occurred: ", e);
 
     return { error: "An unexpected error occurred" };
   }
