@@ -12,6 +12,24 @@ export async function getModBySlug(slug: string) {
   });
 }
 
+export async function getModById(id: string) {
+  if (!id) {
+    throw new Error("id parameter is undefined");
+  }
+
+  return await db.query.mods.findFirst({
+    where: (mods, { eq }) => eq(mods.id, id)
+  });
+}
+
+export async function deleteModById(id: string) {
+  if (!id) {
+    throw new Error("id parameter is undefined");
+  }
+
+  await db.delete(mods).where(eq(mods.id, id));
+}
+
 export async function getModBySlugWithOwner(slug: string) {
   if (!slug) {
     throw new Error("slug parameter is undefined");
@@ -37,4 +55,8 @@ export async function getModsByQueryWithOwner(query?: string, limit = 10) {
       owner: true,
     }
   });
+}
+
+export async function updateModSummaryById(id: string, summary: string) {
+  await db.update(mods).set({ summary }).where(eq(mods.id, id));
 }
