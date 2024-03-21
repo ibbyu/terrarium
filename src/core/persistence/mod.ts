@@ -1,6 +1,7 @@
 import { db } from "@/server/db";
 import { mods } from "@/server/db/schema";
 import { eq } from "drizzle-orm";
+import { ModSideType } from "../entities/mod-side";
 
 export async function getModBySlug(slug: string) {
   if (!slug) {
@@ -92,4 +93,16 @@ export async function getModBySlugWithTags(slug: string) {
       }
     }
   });
+}
+
+export async function updateModSideById(id: string, side: ModSideType) {
+  if (!id) {
+    throw new Error("id parameter is undefined");
+  }
+
+  if (!side) {
+    throw new Error("side parameter is undefined");
+  }
+
+  await db.update(mods).set({ side }).where(eq(mods.id, id));
 }

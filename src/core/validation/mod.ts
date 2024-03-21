@@ -12,3 +12,13 @@ export const updateModSummarySchema = z.object({
 export const updateDescriptionSchema = z.object({
   description: z.string()
 });
+
+export const updateModSideSchema = z.object({
+  side: z.enum([
+    "Client",
+    "Server",
+    "Client and Server",
+    "NoSync",
+  ])
+});
+

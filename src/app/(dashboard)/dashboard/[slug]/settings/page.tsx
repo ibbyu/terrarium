@@ -5,8 +5,9 @@ import { getModBySlug, getModBySlugWithTags } from '@/core/persistence/mod';
 import UpdateModSummaryCard from './_components/update-mod-summary-card';
 import DeleteModCard from './_components/delete-mod-card';
 import FeatureTagsCard from './_components/feature-tags-card';
-import { FeatureTags } from '@/core/entities/feature-tag';
 import { getFeatureTags } from '@/core/persistence/feature-tag';
+import UpdateModSideCard from './_components/update-mod-side-card';
+import type { ModSideType } from '@/core/entities/mod-side';
 
 interface Props {
   params: {
@@ -36,8 +37,9 @@ const SettingsPage = async ({ params }: Props) => {
       <h1 className='text-2xl'>Settings</h1>
       <UpdateModSummaryCard modId={mod.id} summary={mod.summary} />
       <FeatureTagsCard modId={mod.id} featureTags={featureTags} activeTags={mod.featureTags} />
+      <UpdateModSideCard modId={mod.id}  side={mod.side as ModSideType ?? undefined}/>
       <div className='flex flex-col gap-4 pt-6'>
-        <DeleteModCard modId={mod.id} />
+        <DeleteModCard modId={mod.id}/>
       </div>
     </>
   );

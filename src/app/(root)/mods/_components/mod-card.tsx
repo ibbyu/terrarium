@@ -14,6 +14,7 @@ import {
   Card,
   CardContent,
 } from "@/components/ui/card";
+import type { ModSideType } from '@/core/entities/mod-side';
 
 interface Props {
   slug: string;
@@ -23,6 +24,7 @@ interface Props {
   summary: string;
   downloads: number;
   updatedAt: Date;
+  side?: ModSideType;
 }
 
 const ModCard = ({ slug, name, ownerName, icon, summary, downloads, updatedAt } : Props) => {

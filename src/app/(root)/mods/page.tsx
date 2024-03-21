@@ -2,6 +2,7 @@ import React from 'react';
 import { getModsByQueryWithOwner } from '@/core/persistence/mod';
 import ModCard from './_components/mod-card';
 import SearchFilter from './_components/search-filter';
+import { ModSideType } from '@/core/entities/mod-side';
 
 export function generateMetadata() {
   return {
@@ -36,6 +37,7 @@ const ModsPage = async ({ searchParams } : Props) => {
                 downloads={m.downloads}
                 icon={m.icon} 
                 updatedAt={new Date(m.updatedAt)}
+                side={m.side as ModSideType ?? undefined}
               />
             }) : <div className='flex items-center justify-center'>no mods found</div>}
           </div>

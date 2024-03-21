@@ -11,6 +11,12 @@ import {
   CardTitle,
   CardDescription
 } from '@/components/ui/card';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip"
 
 interface Props {
   icon: string | null;
@@ -22,9 +28,10 @@ interface Props {
   approved: boolean;
   draft: boolean;
   slug: string;
+  side: string | null;
 }
 
-const InfoCard = ({ icon, name, summary, downloads, createdAtTimeStamp, updatedAtTimeStamp, approved, draft, slug }: Props) => {
+const InfoCard = ({ icon, name, summary, downloads, createdAtTimeStamp, updatedAtTimeStamp, approved, draft, slug, side }: Props) => {
   return (
     <Card className='md:flex flex-col border-accent border rounded-2xl md:col-span-2 gap-2'>
       <CardHeader className='flex flex-col gap-2 pb-0'>
@@ -37,8 +44,12 @@ const InfoCard = ({ icon, name, summary, downloads, createdAtTimeStamp, updatedA
             {draft && <Badge variant="outline">Draft</Badge>}
           </div>
         </CardTitle>
-        <CardDescription className='text-sm'>
+        <CardDescription className='text-sm flex flex-col gap-4'>
           <span className='text-muted-foreground'>{summary ?? <span className='italic'>No summary</span>}</span>
+          {side &&
+            <div className='flex items-center justify-between'>
+              <span>{side}</span>
+            </div>}
         </CardDescription>
       </CardHeader>
       <CardContent className='flex flex-col gap-2'>
