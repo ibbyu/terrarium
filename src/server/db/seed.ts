@@ -1,15 +1,15 @@
 import { db } from "./index";
 import { v4 as uuidv4 } from "uuid";
-import { Tags } from "@/core/entities/tag";
-import { tags } from "./schema";
+import { FeatureTags } from "@/core/entities/feature-tag";
+import { featureTags } from "./schema";
 import { logger } from "@/lib/winston";
 import type { BetterSQLite3Database } from 'drizzle-orm/better-sqlite3'
 import type * as schema from "./schema";
  
 const seedUsers = (db: BetterSQLite3Database<typeof schema>) => {
-  const data: (typeof tags.$inferInsert)[] = [];
+  const data: (typeof featureTags.$inferInsert)[] = [];
   
-  for (const tag of Tags) {
+  for (const tag of FeatureTags) {
     data.push({
       id: uuidv4(),
       name: tag,
@@ -17,7 +17,7 @@ const seedUsers = (db: BetterSQLite3Database<typeof schema>) => {
   }
   
   try {
-    db.insert(tags).values(data).run()
+    db.insert(featureTags).values(data).run()
   } catch (err) {
     
   }

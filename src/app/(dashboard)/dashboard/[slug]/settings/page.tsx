@@ -4,9 +4,9 @@ import { notFound } from 'next/navigation';
 import { getModBySlug, getModBySlugWithTags } from '@/core/persistence/mod';
 import UpdateModSummaryCard from './_components/update-mod-summary-card';
 import DeleteModCard from './_components/delete-mod-card';
-import TagsCard from './_components/tags-card';
-import { Tags } from '@/core/entities/tag';
-import { getTags } from '@/core/persistence/tag';
+import FeatureTagsCard from './_components/feature-tags-card';
+import { FeatureTags } from '@/core/entities/feature-tag';
+import { getFeatureTags } from '@/core/persistence/feature-tag';
 
 interface Props {
   params: {
@@ -29,13 +29,13 @@ const SettingsPage = async ({ params }: Props) => {
     notFound();
   }
 
-  const tags = await getTags();
+  const featureTags = await getFeatureTags();
 
   return (
     <>
       <h1 className='text-2xl'>Settings</h1>
       <UpdateModSummaryCard modId={mod.id} summary={mod.summary} />
-      <TagsCard modId={mod.id} tags={tags} activeTags={mod.tags} />
+      <FeatureTagsCard modId={mod.id} featureTags={featureTags} activeTags={mod.featureTags} />
       <div className='flex flex-col gap-4 pt-6'>
         <DeleteModCard modId={mod.id} />
       </div>

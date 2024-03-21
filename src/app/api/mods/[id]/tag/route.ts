@@ -1,9 +1,10 @@
 import { NextResponse } from "next/server";
-import { type NextRequest } from 'next/server'
+import { type NextRequest } from 'next/server';
+import { v4 as uuidv4 } from "uuid";
 import { getServerAuthSession } from "@/server/auth";
 import { getModById } from "@/core/persistence/mod";
-import { getTagByName } from "@/core/persistence/tag";
-import { createTagOnMod, deleteTagOnMod } from "@/core/persistence/tag-on-mod";
+import { getFeatureTagByName } from "@/core/persistence/feature-tag";
+import { createFeatureTagOnMod, deleteFeatureTagOnMod } from "@/core/persistence/feature-tag-on-mod";
 import { logger } from "@/lib/winston";
 
 export async function POST(request: NextRequest, { params: { id } }: { params: { id: string } }) {
@@ -27,13 +28,13 @@ export async function POST(request: NextRequest, { params: { id } }: { params: {
       return NextResponse.json({ message: "Mod not found" }, { status: 400 });
     }
 
-    const tag = await getTagByName(name);
+    const tag = await getFeatureTagByName(name);
 
     if (!tag) {
       return NextResponse.json({ message: "Tag not found" }, { status: 400 });
     }
 
-    await createTagOnMod(id, tag.id);
+    await createFeatureTagOnMod(uuidv4(), mod.id, tag.id);
 
     logger.info(`Tag added to mod. Mod name: '${mod.name}', Tag name: '${tag.name}'`);
 
@@ -67,13 +68,13 @@ export async function DELETE(request: NextRequest, { params: { id } }: { params:
       return NextResponse.json({ message: "Mod not found" }, { status: 400 });
     }
 
-    const tag = await getTagByName(name);
+    const tag = await getFeatureTagByName(name);
 
     if (!tag) {
       return NextResponse.json({ message: "Tag not found" }, { status: 400 });
     }
 
-    await deleteTagOnMod(tag.id);
+    await deleteFeatureTagOnMod(tag.id);
 
     logger.info(`Tag deleted from mod. Mod name: '${mod.name}', Tag name: '${tag.name}'`);
 

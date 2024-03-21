@@ -16,25 +16,6 @@ import { type AdapterAccount } from "next-auth/adapters";
  */
 export const createTable = sqliteTableCreator((name) => `terrarium_${name}`);
 
-export const posts = createTable(
-  "post",
-  {
-    id: int("id", { mode: "number" }).primaryKey({ autoIncrement: true }),
-    name: text("name", { length: 256 }),
-    createdById: text("createdById", { length: 255 })
-      .notNull()
-      .references(() => users.id),
-    createdAt: int("created_at", { mode: "timestamp" })
-      .default(sql`CURRENT_TIMESTAMP`)
-      .notNull(),
-    updatedAt: int("updatedAt", { mode: "timestamp" }),
-  },
-  (example) => ({
-    createdByIdIdx: index("createdById_idx").on(example.createdById),
-    nameIndex: index("name_idx").on(example.name),
-  })
-);
-
 export const accounts = createTable(
   "account",
   {
@@ -125,7 +106,8 @@ export const mods = createTable("mod", {
   createdAt: text('createdAt').default(sql`(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))`).notNull(),
   updatedAt: text('updatedAt').default(sql`(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))`).notNull(),
   downloads: int("downloads").default(0).notNull(),
-  ownerId: text("ownerId", { length: 255 }).references(() => users.id, { onDelete: "cascade"})
+  ownerId: text("ownerId", { length: 255 }).references(() => users.id, { onDelete: "cascade"}),
+  side: text("side", { length: 255 }),
 });
 
 export const modRelations = relations(mods, ({ one, many }) => ({
@@ -133,31 +115,31 @@ export const modRelations = relations(mods, ({ one, many }) => ({
     fields: [mods.ownerId],
     references: [users.id]
   }),
-  tags: many(tagOnMods)
+  featureTags: many(featureTagOnMods)
 }));
 
-export const tags = createTable("tag", {
+export const featureTags = createTable("featureTag", {
   id: text("id", { length: 255 }).notNull().primaryKey(),
   name: text("name", { length: 255}).notNull().unique(),
 });
 
-export const tagRelations = relations(tags, ({ many }) => ({
-  tagOnMods: many(tagOnMods)
+export const featureTagRelations = relations(featureTags, ({ many }) => ({
+  featureTagOnMods: many(featureTagOnMods)
 }));
 
-export const tagOnMods = createTable("tagOnMod", {
+export const featureTagOnMods = createTable("featureTagOnMod", {
   id: text("id", { length: 255 }).notNull().primaryKey(),
-  tagId: text("tagId", { length: 255 }).notNull().references(() => tags.id, { onDelete: "cascade"}).unique(),
+  featureTagId: text("tagId", { length: 255 }).notNull().references(() => featureTags.id, { onDelete: "cascade"}).unique(),
   modId: text("modId", { length: 255 }).notNull().references(() => mods.id, { onDelete: "cascade"}),
 });
 
-export const tagOnModsRelations = relations(tagOnMods, ({ one }) => ({
+export const tagOnModsRelations = relations(featureTagOnMods, ({ one }) => ({
   mod: one(mods, {
-    fields: [tagOnMods.modId],
+    fields: [featureTagOnMods.modId],
     references: [mods.id]
   }),
-  tag: one(tags, {
-    fields: [tagOnMods.tagId],
-    references: [tags.id]
+  featureTag: one(featureTags, {
+    fields: [featureTagOnMods.featureTagId],
+    references: [featureTags.id]
   })
 }));

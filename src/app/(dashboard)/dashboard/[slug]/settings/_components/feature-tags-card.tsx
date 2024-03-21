@@ -14,15 +14,15 @@ interface Props {
   modId: string;
   activeTags: {
     modId: string;
-    tagId: string;
+    featureTagId: string;
   }[];
-  tags: {
+  featureTags: {
     id: string;
     name: string;
   }[];
 }
 
-const TagsCard = ({ modId, activeTags, tags }: Props) => {
+const FeatureTagsCard = ({ modId, activeTags, featureTags }: Props) => {
   const router = useRouter();
 
   const onAddTag = async (tagName: string) => {
@@ -75,10 +75,10 @@ const TagsCard = ({ modId, activeTags, tags }: Props) => {
         <CardTitle>Tags</CardTitle>
       </CardHeader>
       <CardContent className='grid grid-cols-4'>
-        {tags.map((tag) => <TagCheckbox
+        {featureTags.map((tag) => <TagCheckbox
           key={tag.id}
           name={tag.name}
-          checked={activeTags.some((t) => t.tagId === tag.id)}
+          checked={activeTags.some((t) => t.featureTagId === tag.id)}
           onAddTag={onAddTag}
           onDeleteTag={onDeleteTag}>
           {tag.name}
@@ -105,4 +105,4 @@ const TagCheckbox = ({ children, checked, name, onAddTag, onDeleteTag }: TagChec
   );
 }
 
-export default TagsCard;
+export default FeatureTagsCard;
