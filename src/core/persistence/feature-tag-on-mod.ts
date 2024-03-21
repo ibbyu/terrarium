@@ -2,9 +2,8 @@ import { db } from "@/server/db";
 import { featureTagOnMods } from "@/server/db/schema";
 import { eq } from "drizzle-orm";
 
-export async function createFeatureTagOnMod(id: string, modId: string, featureTagId: string) {
+export async function createFeatureTagOnMod(modId: string, featureTagId: string) {
   await db.insert(featureTagOnMods).values({
-    id,
     modId,
     featureTagId
   });

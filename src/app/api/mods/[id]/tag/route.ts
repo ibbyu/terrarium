@@ -34,7 +34,7 @@ export async function POST(request: NextRequest, { params: { id } }: { params: {
       return NextResponse.json({ message: "Tag not found" }, { status: 400 });
     }
 
-    await createFeatureTagOnMod(uuidv4(), mod.id, tag.id);
+    await createFeatureTagOnMod(mod.id, tag.id);
 
     logger.info(`Tag added to mod. Mod name: '${mod.name}', Tag name: '${tag.name}'`);
 

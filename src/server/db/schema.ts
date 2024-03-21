@@ -128,12 +128,15 @@ export const featureTagRelations = relations(featureTags, ({ many }) => ({
 }));
 
 export const featureTagOnMods = createTable("featureTagOnMod", {
-  id: text("id", { length: 255 }).notNull().primaryKey(),
   featureTagId: text("tagId", { length: 255 }).notNull().references(() => featureTags.id, { onDelete: "cascade"}).unique(),
   modId: text("modId", { length: 255 }).notNull().references(() => mods.id, { onDelete: "cascade"}),
+}, (table) => {
+  return {
+    pk: primaryKey({ columns: [table.featureTagId, table.modId] }),
+  };
 });
 
-export const tagOnModsRelations = relations(featureTagOnMods, ({ one }) => ({
+export const featureTagOnModsRelations = relations(featureTagOnMods, ({ one }) => ({
   mod: one(mods, {
     fields: [featureTagOnMods.modId],
     references: [mods.id]

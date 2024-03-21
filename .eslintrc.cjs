@@ -38,8 +38,14 @@ const config = {
         }
       }
     ],
-    "drizzle/enforce-delete-with-where": "warn",
-    "drizzle/enforce-update-with-where": "error",
+    "drizzle/enforce-delete-with-where": [
+      "error",
+      { drizzleObjectName: ["db"] },
+    ],
+    "drizzle/enforce-update-with-where": [
+      "error",
+      { drizzleObjectName: ["db"] },
+    ],
     "@typescript-eslint/no-empty-interface": "off",
   }
 }

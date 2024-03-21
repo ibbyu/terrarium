@@ -85,7 +85,11 @@ export async function getModBySlugWithTags(slug: string) {
   return await db.query.mods.findFirst({
     where: (mods, { eq }) => eq(mods.slug, slug),
     with: {
-      featureTags: true
+      featureTags: {
+        with: {
+          featureTag: true
+        }
+      }
     }
   });
 }
