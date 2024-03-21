@@ -44,15 +44,15 @@ const NewModForm = () => {
         }
       });
       
-      const data = await response.json() as { errorMessage: string, slug: string }
+      const data = await response.json() as { message: string, slug: string }
       
       if (response.ok) {
-        toast.success("Mod created");
+        toast.success(data.message);
         router.refresh();
         router.push(`/dashboard/${data.slug}`);
       }
       else {
-        setMessage(data.errorMessage);
+        setMessage(data.message);
       }
     }
     catch(error) {
