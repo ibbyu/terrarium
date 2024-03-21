@@ -99,12 +99,13 @@ export const verificationTokens = createTable(
 export const users = createTable("user", {
   id: text("id", { length: 255 }).notNull().primaryKey(),
   name: text("name", { length: 255 }).notNull(),
-  email: text("email", { length: 255 }).notNull(),
+  email: text("email", { length: 255 }).unique().notNull(),
   emailVerified: int("emailVerified", {
     mode: "timestamp",
   }).default(sql`CURRENT_TIMESTAMP`),
   image: text("image", { length: 255 }),
-  joinedAt: text('joinedAt').default(sql`(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))`).notNull()
+  joinedAt: text('joinedAt').default(sql`(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))`).notNull(),
+  password: text("password"),
 });
 
 export const usersRelations = relations(users, ({ many }) => ({

@@ -48,8 +48,8 @@ const NewModForm = () => {
       
       if (response.ok) {
         toast.success(data.message);
-        router.refresh();
         router.push(`/dashboard/${data.slug}`);
+        router.refresh();
       }
       else {
         setMessage(data.message);

@@ -1,5 +1,5 @@
 import React from 'react';
-import SignInCard from '../_components/sign-in-card';
+import SignInCard from './_components/sign-in-card';
 
 export function generateMetadata() {
   return {

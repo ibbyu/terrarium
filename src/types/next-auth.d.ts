@@ -10,7 +10,7 @@ declare module "next-auth" {
     user: {
       id: string;
       name: string;
-      createdAt: Date;
+      joinedAt: string;
       // ...other properties
       // role: UserRole;
     } & DefaultSession["user"];
@@ -19,7 +19,7 @@ declare module "next-auth" {
   interface User {
     id: string;
     name: string;
-    createdAt: Date;
+    joinedAt: string;
   }
 }
 
@@ -27,7 +27,7 @@ declare module 'next-auth/jwt' {
   interface JWT {
     id: string;
     name: string;
-    createdAt: Date;
+    joinedAt: string;
     image?: string | null;
   }
 }

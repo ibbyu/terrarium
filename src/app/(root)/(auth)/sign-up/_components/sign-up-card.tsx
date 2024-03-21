@@ -11,19 +11,19 @@ import {
 } from "@/components/ui/card";
 import { Button } from '@/components/ui/button';
 import { Icons } from '@/components/icons';
-// import SignInForm from './sign-in-form';
+import SignUpForm from './sign-up-form';
 
-const SignInCard = () => {
+const SignUpCard = () => {
   return (
     <Card className='w-96'>
       <CardHeader className="space-y-1">
-        <CardTitle className="text-2xl">Sign in</CardTitle>
+        <CardTitle className="text-2xl">Sign up</CardTitle>
         <CardDescription>
-          New to Terrarium? <Link href="/sign-up" className='text-[#22c55e]'>Sign up for an account</Link>.
+          Already have an account? <Link href="/sign-in" className='text-primary'>Sign in</Link>.
         </CardDescription>
       </CardHeader>
       <CardContent className="grid gap-4">
-        {/* <SignInForm /> */}
+        <SignUpForm />
         <div className="relative">
           <div className="absolute inset-0 flex items-center">
             <span className="w-full border-t" />
@@ -39,9 +39,9 @@ const SignInCard = () => {
             <Icons.discord className="mr-2 h-4 w-4" />
             Discord
           </Button>
-          <Button variant="outline" onClick={() => signIn("github", { callbackUrl: "/" })}>
-            <Icons.gitHub className="mr-2 h-4 w-4" />
-            GitHub
+          <Button variant="outline">
+            <Icons.google className="mr-2 h-4 w-4" />
+            Google
           </Button>
         </div>
       </CardContent>
@@ -49,4 +49,4 @@ const SignInCard = () => {
   );
 }
 
-export default SignInCard;
+export default SignUpCard;

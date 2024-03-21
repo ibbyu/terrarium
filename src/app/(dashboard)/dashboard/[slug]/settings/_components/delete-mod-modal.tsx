@@ -38,8 +38,8 @@ const DeleteModModal = ({ modId }: Props) => {
 
       if (response.ok) {
         toast.success(message);
-        router.refresh();
         router.push("/dashboard");
+        router.refresh();
       }
       else {
         toast.error(message);
