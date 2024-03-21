@@ -76,3 +76,16 @@ export async function updateModDescriptionById(id: string, description: string) 
 
   await db.update(mods).set({ description }).where(eq(mods.id, id));
 }
+
+export async function getModBySlugWithTags(slug: string) {
+  if (!slug) {
+    throw new Error("slug parameter is undefined");
+  }
+
+  return await db.query.mods.findFirst({
+    where: (mods, { eq }) => eq(mods.slug, slug),
+    with: {
+      tags: true
+    }
+  });
+}

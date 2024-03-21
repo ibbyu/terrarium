@@ -127,9 +127,36 @@ export const mods = createTable("mod", {
   ownerId: text("ownerId", { length: 255 }).references(() => users.id, { onDelete: "cascade"})
 });
 
-export const modRelations = relations(mods, ({ one }) => ({
+export const modRelations = relations(mods, ({ one, many }) => ({
   owner: one(users, {
     fields: [mods.ownerId],
     references: [users.id]
+  }),
+  tags: many(tagOnMods)
+}));
+
+export const tags = createTable("tag", {
+  id: text("id", { length: 255 }).notNull().primaryKey(),
+  name: text("name", { length: 255}).notNull().unique(),
+});
+
+export const tagRelations = relations(tags, ({ many }) => ({
+  tagOnMods: many(tagOnMods)
+}));
+
+export const tagOnMods = createTable("tagOnMod", {
+  id: text("id", { length: 255 }).notNull().primaryKey(),
+  tagId: text("tagId", { length: 255 }).notNull().references(() => tags.id, { onDelete: "cascade"}).unique(),
+  modId: text("modId", { length: 255 }).notNull().references(() => mods.id, { onDelete: "cascade"}),
+});
+
+export const tagOnModsRelations = relations(tagOnMods, ({ one }) => ({
+  mod: one(mods, {
+    fields: [tagOnMods.modId],
+    references: [mods.id]
+  }),
+  tag: one(tags, {
+    fields: [tagOnMods.tagId],
+    references: [tags.id]
   })
 }));
