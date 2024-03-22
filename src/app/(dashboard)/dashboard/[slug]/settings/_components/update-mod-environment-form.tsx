@@ -7,7 +7,7 @@ import { useRouter } from 'next/navigation';
 import { Loader2 } from 'lucide-react';
 import { toast } from "sonner";
 
-import { updateModSideSchema } from '@/core/validation/mod';
+import { updateModEnvironmentSchema } from '@/core/validation/mod';
 import {
   Select,
   SelectContent,
@@ -25,28 +25,28 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { type ModSideType, ModSides } from '@/core/entities/mod-side';
+import { type EnvironmentType, Environments } from '@/core/entities/environment';
 
 interface Props {
   modId: string;
-  side?: ModSideType;
+  environment?: EnvironmentType;
 }
 
-const UpdateModSideForm = ({ modId, side }: Props) => {
+const UpdateModSideForm = ({ modId, environment }: Props) => {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
-  const form = useForm<z.infer<typeof updateModSideSchema>>({
-    resolver: zodResolver(updateModSideSchema),
+  const form = useForm<z.infer<typeof updateModEnvironmentSchema>>({
+    resolver: zodResolver(updateModEnvironmentSchema),
     defaultValues: {
-      side
+      environment
     },
   })
 
-  const onSubmit = async (values: z.infer<typeof updateModSideSchema>) => {
+  const onSubmit = async (values: z.infer<typeof updateModEnvironmentSchema>) => {
     setLoading(true);
 
     try {
-      const response = await fetch(`/api/mods/${modId}/side`, {
+      const response = await fetch(`/api/mods/${modId}/environment`, {
         method: "PATCH",
         body: JSON.stringify(values)
       });
@@ -75,17 +75,17 @@ const UpdateModSideForm = ({ modId, side }: Props) => {
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
         <FormField
           control={form.control}
-          name="side"
+          name="environment"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Side</FormLabel>
+              <FormLabel>Environment</FormLabel>
               <FormControl>
                 <Select value={field.value} name={field.name} onValueChange={field.onChange}>
                   <SelectTrigger className="w-[180px]">
                     <SelectValue onBlur={field.onBlur} ref={field.ref} placeholder="None" />
                   </SelectTrigger>
                   <SelectContent>
-                    {ModSides.map((s) => <SelectItem key={s} value={s}>{s}</SelectItem>)}
+                    {Environments.map((s) => <SelectItem key={s} value={s}>{s}</SelectItem>)}
                   </SelectContent>
                 </Select>
               </FormControl>
@@ -94,7 +94,7 @@ const UpdateModSideForm = ({ modId, side }: Props) => {
           )}
         />
         <div className='flex justify-end'>
-          <Button disabled={form.watch("side") === side}>{loading ? <Loader2 className='animate-spin' /> : "Save"}</Button>
+          <Button disabled={form.watch("environment") === environment}>{loading ? <Loader2 className='animate-spin' /> : "Save"}</Button>
         </div>
       </form>
     </Form>

@@ -13,8 +13,8 @@ export const updateDescriptionSchema = z.object({
   description: z.string()
 });
 
-export const updateModSideSchema = z.object({
-  side: z.enum([
+export const updateModEnvironmentSchema = z.object({
+  environment: z.enum([
     "Client",
     "Server",
     "Client and Server",

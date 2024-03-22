@@ -28,10 +28,10 @@ interface Props {
   approved: boolean;
   draft: boolean;
   slug: string;
-  side: string | null;
+  environment: string | null;
 }
 
-const InfoCard = ({ icon, name, summary, downloads, createdAtTimeStamp, updatedAtTimeStamp, approved, draft, slug, side }: Props) => {
+const InfoCard = ({ icon, name, summary, downloads, createdAtTimeStamp, updatedAtTimeStamp, approved, draft, slug, environment }: Props) => {
   return (
     <Card className='md:flex flex-col border-accent border rounded-2xl md:col-span-2 gap-2'>
       <CardHeader className='flex flex-col gap-2 pb-0'>
@@ -46,10 +46,7 @@ const InfoCard = ({ icon, name, summary, downloads, createdAtTimeStamp, updatedA
         </CardTitle>
         <CardDescription className='text-sm flex flex-col gap-4'>
           <span className='text-muted-foreground'>{summary ?? <span className='italic'>No summary</span>}</span>
-          {side &&
-            <div className='flex items-center justify-between'>
-              <span>{side}</span>
-            </div>}
+          {environment && <span>{environment}</span>}
         </CardDescription>
       </CardHeader>
       <CardContent className='flex flex-col gap-2'>

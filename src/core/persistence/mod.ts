@@ -1,7 +1,7 @@
 import { db } from "@/server/db";
 import { mods } from "@/server/db/schema";
 import { eq } from "drizzle-orm";
-import { ModSideType } from "../entities/mod-side";
+import { EnvironmentType } from "../entities/environment";
 
 export async function getModBySlug(slug: string) {
   if (!slug) {
@@ -95,14 +95,14 @@ export async function getModBySlugWithTags(slug: string) {
   });
 }
 
-export async function updateModSideById(id: string, side: ModSideType) {
+export async function updateModEnvironmentById(id: string, environment: EnvironmentType) {
   if (!id) {
     throw new Error("id parameter is undefined");
   }
 
-  if (!side) {
-    throw new Error("side parameter is undefined");
+  if (!environment) {
+    throw new Error("environment parameter is undefined");
   }
 
-  await db.update(mods).set({ side }).where(eq(mods.id, id));
+  await db.update(mods).set({ environment }).where(eq(mods.id, id));
 }

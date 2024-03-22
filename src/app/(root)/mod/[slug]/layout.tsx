@@ -31,7 +31,7 @@ const ModPageLayout = async ({
           approved={Boolean(mod.approved)}
           draft={Boolean(mod.draft)}
           slug={mod.slug}
-          side={mod.side}
+          environment={mod.environment}
         />
         <div className='row-start-3 flex flex-col gap-4'>
 {/*           <ExternalResourcesCard

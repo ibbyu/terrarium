@@ -107,7 +107,7 @@ export const mods = createTable("mod", {
   updatedAt: text('updatedAt').default(sql`(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))`).notNull(),
   downloads: int("downloads").default(0).notNull(),
   ownerId: text("ownerId", { length: 255 }).references(() => users.id, { onDelete: "cascade"}),
-  side: text("side", { length: 255 }),
+  environment: text("environment", { length: 255 }),
 });
 
 export const modRelations = relations(mods, ({ one, many }) => ({
