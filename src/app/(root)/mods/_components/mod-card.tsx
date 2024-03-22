@@ -13,7 +13,11 @@ import {
 import {
   Card,
   CardContent,
-} from "@/components/ui/card";
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card"
 import type { EnvironmentType } from '@/core/entities/environment';
 
 interface Props {
@@ -24,40 +28,39 @@ interface Props {
   summary: string;
   downloads: number;
   updatedAt: Date;
-  side?: EnvironmentType;
+  environment?: EnvironmentType;
 }
 
-const ModCard = ({ slug, name, ownerName, icon, summary, downloads, updatedAt } : Props) => {
+const ModCard = ({ slug, name, ownerName, icon, summary, downloads, updatedAt, environment }: Props) => {
   return (
-    <Card >
-      <CardContent className="p-4 grid md:grid-cols-2 gap-4">
-        <Link href={`/mod/${slug}`} className='md:row-span-3 col-end-1 w-28'>
-          <ModIcon icon={icon} />
-        </Link>
-        <div className='flex items-end gap-2 md:col-span-3 flex-wrap'>
-          <Link href={`/mod/${slug}`} className='font-bold text-2xl'>{name}</Link>
-          <span className='text-muted-foreground'>by</span>
-          <Link href={`/user/${ownerName}`} className='underline text-muted-foreground hover:text-foreground'>{ownerName}</Link>
+    <Card>
+      <CardHeader className='grid grid-cols-1 gap-4 h-auto'>
+        <div className='min-w-24 sm:w-32 col-end-1'>
+          <Link href={`/mod/${slug}`}>
+            <ModIcon icon={icon} />
+          </Link>
         </div>
-        <div className='md:col-span-3'>
-          <p className='text-muted-foreground'>{summary ?? <span className='italic'>No summary</span>}</p>
+        <div className='flex flex-col justify-between w-full flex-wrap'>
+          <div className='flex gap-2 items-center'>
+            <Link href={`/mod/${slug}`} className='font-bold text-2xl'>{name}</Link>
+            by
+            <Link href={`/user/${ownerName}`} className='hover:text-muted-foreground'>{ownerName}</Link>
+          </div>
+          <div className='text-ellipsis'>
+            {summary}
+          </div>
+          <div className='text-sm text-muted-foreground flex gap-2 flex-wrap'>
+            <span>{downloads} Downloads</span>
+            <span>-</span>
+            <span>{`Updated ${formatDistance(updatedAt, new Date(), { addSuffix: true })}`}</span>
+            {environment && <span>-</span>}
+            {environment && <span>{environment}</span>}
+          </div>
         </div>
-        <div className='flex items-center gap-2 md:col-span-2 text-muted-foreground'><Download size={16} /><span className='font-bold'>{downloads}</span> downloads</div>
-        <div className='md:col-start-3 text-muted-foreground'>
-          <TooltipProvider>
-            <Tooltip>
-              <TooltipTrigger className='hover:cursor-default'>
-                <div className='flex items-center gap-2'>
-                  <RefreshCcw size={16} />{`Updated ${formatDistance(updatedAt, new Date())} ago`}
-                </div>
-              </TooltipTrigger>
-              <TooltipContent>
-                <p>{format(updatedAt, "MMMM d, yyyy 'at' h:m a")}</p>
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
+        <div className='sm:ml-auto col-start-0 sm:col-start-2'>
+          feature tag placeholder container
         </div>
-      </CardContent>
+      </CardHeader>
     </Card>
   );
 }

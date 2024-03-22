@@ -37,7 +37,7 @@ const ModsPage = async ({ searchParams } : Props) => {
                 downloads={m.downloads}
                 icon={m.icon} 
                 updatedAt={new Date(m.updatedAt)}
-                side={m.side as EnvironmentType ?? undefined}
+                environment={m.environment as EnvironmentType ?? undefined}
               />
             }) : <div className='flex items-center justify-center'>no mods found</div>}
           </div>
