@@ -142,3 +142,18 @@ export async function getModBySlugWithOwnerWithLinks(slug: string) {
     }
   });
 }
+
+export async function getModsByQueryTagWithOwnerWithFeatureTags(query?: string, limit = 10) {
+  return await db.query.mods.findMany({
+    limit,
+    where: query ? (mods, { like }) => like(mods.name, `%${query}%`) : undefined,
+    with: {
+      owner: true,
+      featureTags: {
+        with: {
+          featureTag: true
+        }
+      }
+    }
+  });
+}

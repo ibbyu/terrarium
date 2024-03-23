@@ -1,8 +1,9 @@
 import React from 'react';
-import { getModsByQueryWithOwner } from '@/core/persistence/mod';
+import { getModsByQueryTagWithOwnerWithFeatureTags } from '@/core/persistence/mod';
 import ModCard from './_components/mod-card';
 import SearchFilter from './_components/search-filter';
-import { EnvironmentType } from '@/core/entities/environment';
+import type { EnvironmentType } from '@/core/entities/environment';
+import FeatureTagFilter from './_components/feature-tag-filter';
 
 export function generateMetadata() {
   return {
@@ -12,17 +13,22 @@ export function generateMetadata() {
 
 interface Props {
   params: { slug: string };
-  searchParams: { q?: string }
+  searchParams: { q?: string, c?: string | string[] }
 }
 
-const ModsPage = async ({ searchParams } : Props) => {
-  const mods = await getModsByQueryWithOwner(searchParams.q);
+const ModsPage = async ({ searchParams }: Props) => {
+  let mods = await getModsByQueryTagWithOwnerWithFeatureTags(searchParams.q);
+  const categories = Array.isArray(searchParams.c) ? searchParams.c : searchParams.c ? [searchParams.c] : [];
+
+  if (categories.length) {
+    mods = mods.filter((m) => m.featureTags.some(t => categories.includes(t.featureTag.name)));
+  }
 
   return (
     <div className='pt-16'>
       <div className='grid grid-cols-1 md:grid-cols-8 gap-6 h-full'>
-        <div className='hidden md:flex flex-col rounded-2xl md:col-span-2 p-6 h-96 gap-4 bg-accent'>
-          tag filter placeholder
+        <div className='hidden md:flex flex-col rounded-2xl md:col-span-2 p-6 gap-4 bg-accent'>
+          <FeatureTagFilter activeTags={[]} />
         </div>
         <div className='w-full h-full md:col-span-6 rounded-2xl flex flex-col gap-4'>
           <SearchFilter query={searchParams.q} modsFound={mods.length} />
@@ -35,9 +41,10 @@ const ModsPage = async ({ searchParams } : Props) => {
                 ownerName={m.owner?.name ?? "Unknown"}
                 summary={m.summary}
                 downloads={m.downloads}
-                icon={m.icon} 
+                icon={m.icon}
                 updatedAt={new Date(m.updatedAt)}
                 environment={m.environment as EnvironmentType ?? undefined}
+                featureTags={m.featureTags}
               />
             }) : <div className='flex items-center justify-center'>no mods found</div>}
           </div>
