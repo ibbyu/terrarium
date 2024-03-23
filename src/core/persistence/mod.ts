@@ -106,3 +106,7 @@ export async function updateModEnvironmentById(id: string, environment: Environm
 
   await db.update(mods).set({ environment }).where(eq(mods.id, id));
 }
+
+export async function updateModIconById(id: string, icon: string) {
+  void await db.update(mods).set({ icon }).where(eq(mods.id, id));
+}

@@ -26,11 +26,11 @@ const ModCard = ({ name, icon, summary, slug }: Props) => {
       <CardHeader className='p-4'>
         <div className='w-full flex gap-4'>
           <ModIcon icon={icon} className='w-24 h-24' />
-          <div className='flex flex-col'>
+          <div className='flex flex-col w-1/2 gap-2'>
             <div>
               {name}
             </div>
-            <div className='text-muted-foreground'>
+            <div className='text-sm text-muted-foreground text-clip'>
               {summary}
             </div>
           </div>

@@ -8,6 +8,7 @@ import FeatureTagsCard from './_components/feature-tags-card';
 import { getFeatureTags } from '@/core/persistence/feature-tag';
 import UpdateModSideCard from './_components/update-mod-environment-card';
 import type { EnvironmentType } from '@/core/entities/environment';
+import UpdateModIconCard from "./_components/update-mod-icon-card";
 
 interface Props {
   params: {
@@ -35,6 +36,7 @@ const SettingsPage = async ({ params }: Props) => {
   return (
     <>
       <h1 className='text-2xl'>Settings</h1>
+      <UpdateModIconCard modId={mod.id} icon={mod.icon} />
       <UpdateModSummaryCard modId={mod.id} summary={mod.summary} />
       <FeatureTagsCard modId={mod.id} featureTags={featureTags} activeTags={mod.featureTags} />
       <UpdateModSideCard modId={mod.id}  environment={mod.environment as EnvironmentType ?? undefined}/>

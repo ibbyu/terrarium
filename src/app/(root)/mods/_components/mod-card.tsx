@@ -46,7 +46,7 @@ const ModCard = ({ slug, name, ownerName, icon, summary, downloads, updatedAt, e
             by
             <Link href={`/user/${ownerName}`} className='hover:text-muted-foreground'>{ownerName}</Link>
           </div>
-          <div className='text-ellipsis'>
+          <div className='w-full truncate whitespace-pre-wrap'>
             {summary}
           </div>
           <div className='text-sm text-muted-foreground flex gap-2 flex-wrap'>

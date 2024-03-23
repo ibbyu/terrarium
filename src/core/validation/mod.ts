@@ -22,3 +22,6 @@ export const updateModEnvironmentSchema = z.object({
   ])
 });
 
+export const updateIconSchema = z.object({
+  icon: z.string().url()
+});
