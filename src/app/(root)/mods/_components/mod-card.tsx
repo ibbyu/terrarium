@@ -34,31 +34,27 @@ interface Props {
 const ModCard = ({ slug, name, ownerName, icon, summary, downloads, updatedAt, environment }: Props) => {
   return (
     <Card>
-      <CardHeader className='grid grid-cols-1 gap-4 h-auto'>
-        <div className='min-w-24 sm:w-32 col-end-1'>
+      <CardHeader className='grid grid-cols-2 gap-4'>
+        <div className='w-20 sm:w-32 col-end-1'>
           <Link href={`/mod/${slug}`}>
             <ModIcon icon={icon} />
           </Link>
         </div>
-        <div className='flex flex-col justify-between w-full flex-wrap'>
-          <div className='flex gap-2 items-center'>
-            <Link href={`/mod/${slug}`} className='font-bold text-2xl'>{name}</Link>
-            by
-            <Link href={`/user/${ownerName}`} className='hover:text-muted-foreground'>{ownerName}</Link>
+        <div className='flex flex-col gap-2 col-span-2'>
+          <div className='flex gap-2 flex-wrap items-end'>
+          <Link href={`/mod/${slug}`} className='font-bold text-2xl'>{name}</Link>
+          <span>by</span>
+          <Link href={`/user/${ownerName}`} className='hover:text-muted-foreground'>{ownerName}</Link>
           </div>
-          <div className='w-full truncate whitespace-pre-wrap'>
-            {summary}
-          </div>
-          <div className='text-sm text-muted-foreground flex gap-2 flex-wrap'>
+          <div>{summary}</div>
+          <div className='text-xs sm:text-sm text-muted-foreground flex sm:flex-row gap-4 sm:gap-10 flex-wrap sm:items-end h-full'>
             <span>{downloads} Downloads</span>
-            <span>-</span>
             <span>{`Updated ${formatDistance(updatedAt, new Date(), { addSuffix: true })}`}</span>
-            {environment && <span>-</span>}
             {environment && <span>{environment}</span>}
           </div>
         </div>
-        <div className='sm:ml-auto col-start-0 sm:col-start-2'>
-          feature tag placeholder container
+        <div className='sm:col-end-4 row-span-3 sm:row-span-1'>
+          test
         </div>
       </CardHeader>
     </Card>
