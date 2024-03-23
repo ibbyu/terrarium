@@ -1,7 +1,7 @@
 import React from 'react';
 import { notFound } from 'next/navigation';
 
-import { getModBySlug, getModBySlugWithTags } from '@/core/persistence/mod';
+import { getModBySlug, getModBySlugWithTagsWithLinks } from '@/core/persistence/mod';
 import UpdateModSummaryCard from './_components/update-mod-summary-card';
 import DeleteModCard from './_components/delete-mod-card';
 import FeatureTagsCard from './_components/feature-tags-card';
@@ -9,6 +9,7 @@ import { getFeatureTags } from '@/core/persistence/feature-tag';
 import UpdateModSideCard from './_components/update-mod-environment-card';
 import type { EnvironmentType } from '@/core/entities/environment';
 import UpdateModIconCard from "./_components/update-mod-icon-card";
+import UpdateModLinksCard from './_components/update-mod-links-card';
 
 interface Props {
   params: {
@@ -25,7 +26,7 @@ export async function generateMetadata({ params }: Props) {
 }
 
 const SettingsPage = async ({ params }: Props) => {
-  const mod = await getModBySlugWithTags(params.slug);
+  const mod = await getModBySlugWithTagsWithLinks(params.slug);
 
   if (!mod) {
     notFound();
@@ -40,6 +41,13 @@ const SettingsPage = async ({ params }: Props) => {
       <UpdateModSummaryCard modId={mod.id} summary={mod.summary} />
       <FeatureTagsCard modId={mod.id} featureTags={featureTags} activeTags={mod.featureTags} />
       <UpdateModSideCard modId={mod.id}  environment={mod.environment as EnvironmentType ?? undefined}/>
+      <UpdateModLinksCard
+          modId={mod.id} modLinksId={mod.links?.id} 
+          issues={mod.links?.issues}
+          source={mod.links?.source}
+          wiki={mod.links?.wiki}
+          discord={mod.links?.discord} 
+        />
       <div className='flex flex-col gap-4 pt-6'>
         <DeleteModCard modId={mod.id}/>
       </div>

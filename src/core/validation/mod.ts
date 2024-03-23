@@ -25,3 +25,11 @@ export const updateModEnvironmentSchema = z.object({
 export const updateIconSchema = z.object({
   icon: z.string().url()
 });
+
+export const updateModLinksSchema = z.object({
+  modLinksId: z.string().nullish(),
+  issues: z.string().url().optional().or(z.literal('')),
+  source: z.string().url().optional().or(z.literal('')),
+  wiki: z.string().url().optional().or(z.literal('')),
+  discord: z.string().url().optional().or(z.literal(''))
+});

@@ -30,7 +30,7 @@ export async function PATCH(request: Request, { params: { id } } : { params: { i
     if (mod.ownerId !== session.user.id) {
       logger.info(`Update mod icon failed. User does not own this mod. Mod name: '${mod.name}' User: '${session.user.name}'`);
 
-      return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+      return NextResponse.json({ message: "Unauthorized" }, { status: 403 });
     }
 
     if (mod.icon) {

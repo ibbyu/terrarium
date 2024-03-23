@@ -1,9 +1,9 @@
 import React from 'react';
 import InfoCard from './_components/info-card';
-/* import ExternalResourcesCard from './_components/external-resources-card'; */
+import LinksCard from './_components/links-card';
 import MembersCard from './_components/members-card';
 import Navbar from './_components/navbar';
-import { getModBySlugWithOwner } from '@/core/persistence/mod';
+import { getModBySlugWithOwnerWithLinks } from '@/core/persistence/mod';
 
 const ModPageLayout = async ({
   children,
@@ -12,12 +12,12 @@ const ModPageLayout = async ({
   children: React.ReactNode;
   params: { slug: string };
 }) => {
-  const mod = await getModBySlugWithOwner(params.slug);
+  const mod = await getModBySlugWithOwnerWithLinks(params.slug);
 
   if (!mod?.owner) {
     return <div className='w-full flex h-full justify-center items-center'>Mod not found</div>;
   }
-  
+
   return (
     <div className='grid grid-cols-1 lg:grid-cols-8 gap-6 pt-16 lg:grid-rows-1'>
       <div className='lg:col-span-2 flex flex-col gap-4'>
@@ -34,17 +34,17 @@ const ModPageLayout = async ({
           environment={mod.environment}
         />
         <div className='row-start-3 flex flex-col gap-4'>
-{/*           <ExternalResourcesCard
-            issues={mod.modExternalResources?.issues}
-            source={mod.modExternalResources?.source}
-            wiki={mod.modExternalResources?.wiki}
-            discord={mod.modExternalResources?.discord}
-          /> */}
+          <LinksCard
+            issues={mod.links?.issues}
+            source={mod.links?.source}
+            wiki={mod.links?.wiki}
+            discord={mod.links?.discord}
+          />
           <MembersCard name={mod.owner.name} avatar={mod.owner.image} />
         </div>
       </div>
       <div className='w-full lg:col-span-6 flex flex-col gap-4 lg:row-start-1'>
-        <Navbar slug={mod.slug}/>
+        <Navbar slug={mod.slug} />
         {children}
       </div>
     </div>

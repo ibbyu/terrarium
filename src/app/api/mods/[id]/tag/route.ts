@@ -1,6 +1,5 @@
 import { NextResponse } from "next/server";
 import { type NextRequest } from 'next/server';
-import { v4 as uuidv4 } from "uuid";
 import { getServerAuthSession } from "@/server/auth";
 import { getModById } from "@/core/persistence/mod";
 import { getFeatureTagByName } from "@/core/persistence/feature-tag";
@@ -19,7 +18,7 @@ export async function POST(request: NextRequest, { params: { id } }: { params: {
     }
 
     if (!session) {
-      return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+      return NextResponse.json({ message: "Unauthorized" }, { status: 403 });
     }
 
     const mod = await getModById(id);
@@ -59,7 +58,7 @@ export async function DELETE(request: NextRequest, { params: { id } }: { params:
     }
 
     if (!session) {
-      return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+      return NextResponse.json({ message: "Unauthorized" }, { status: 403 });
     }
 
     const mod = await getModById(id);

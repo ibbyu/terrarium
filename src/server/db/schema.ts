@@ -107,7 +107,7 @@ export const mods = createTable("mod", {
   updatedAt: text('updatedAt').default(sql`(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))`).notNull(),
   downloads: int("downloads").default(0).notNull(),
   ownerId: text("ownerId", { length: 255 }).references(() => users.id, { onDelete: "cascade"}),
-  environment: text("environment", { length: 255 }),
+  environment: text("environment", { length: 255 }), 
 });
 
 export const modRelations = relations(mods, ({ one, many }) => ({
@@ -115,7 +115,8 @@ export const modRelations = relations(mods, ({ one, many }) => ({
     fields: [mods.ownerId],
     references: [users.id]
   }),
-  featureTags: many(featureTagOnMods)
+  featureTags: many(featureTagOnMods),
+  links: one(modLinks),
 }));
 
 export const featureTags = createTable("featureTag", {
@@ -144,5 +145,21 @@ export const featureTagOnModsRelations = relations(featureTagOnMods, ({ one }) =
   featureTag: one(featureTags, {
     fields: [featureTagOnMods.featureTagId],
     references: [featureTags.id]
+  })
+}));
+
+export const modLinks = createTable("modLinks", {
+  id: text("id", { length: 255 }).notNull().primaryKey(),
+  issues: text("issues", { length: 255 }),
+  discord: text("discord", { length: 255 }),
+  wiki: text("wiki", { length: 255 }),
+  source: text("source", { length: 255}),
+  modId: text("modId", { length: 255}).notNull().unique().references(() => mods.id, { onDelete: "cascade"})
+});
+
+export const modLinksRelations = relations(modLinks, ({ one }) => ({
+  mod: one(mods, {
+    fields: [modLinks.modId],
+    references: [mods.id]
   })
 }));

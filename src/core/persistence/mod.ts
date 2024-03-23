@@ -110,3 +110,35 @@ export async function updateModEnvironmentById(id: string, environment: Environm
 export async function updateModIconById(id: string, icon: string) {
   void await db.update(mods).set({ icon }).where(eq(mods.id, id));
 }
+
+export async function getModBySlugWithTagsWithLinks(slug: string) {
+  if (!slug) {
+    throw new Error("slug parameter is undefined");
+  }
+
+  return await db.query.mods.findFirst({
+    where: (mods, { eq }) => eq(mods.slug, slug),
+    with: {
+      featureTags: {
+        with: {
+          featureTag: true,
+        }
+      },
+      links: true
+    }
+  });
+}
+
+export async function getModBySlugWithOwnerWithLinks(slug: string) {
+  if (!slug) {
+    throw new Error("slug parameter is undefined");
+  }
+
+  return await db.query.mods.findFirst({
+    where: (mods, { eq }) => eq(mods.slug, slug),
+    with: {
+      owner: true,
+      links: true
+    }
+  });
+}
