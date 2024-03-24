@@ -91,7 +91,7 @@ export const users = createTable("user", {
 
 export const usersRelations = relations(users, ({ many }) => ({
   accounts: many(accounts),
-  mods: many(mods)
+  mods: many(mods) // ownedMods
 }));
 
 export const mods = createTable("mod", {
@@ -117,6 +117,7 @@ export const modRelations = relations(mods, ({ one, many }) => ({
   }),
   featureTags: many(featureTagOnMods),
   links: one(modLinks),
+  teamMembers: many(memberships),
 }));
 
 export const featureTags = createTable("featureTag", {
@@ -162,4 +163,37 @@ export const modLinksRelations = relations(modLinks, ({ one }) => ({
     fields: [modLinks.modId],
     references: [mods.id]
   })
+}));
+
+export const teams = createTable("teams", {
+  id: text("id", { length: 255 }).notNull().primaryKey(),
+  createdAt: text('createdAt').default(sql`(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))`).notNull(),
+});
+
+export const teamRelations = relations(teams, ({ many }) => ({
+  mods: many(mods),
+  members: many(memberships),
+}));
+
+export const memberships = createTable("membership", {
+  id: text("id", { length: 255 }).notNull().primaryKey(),
+  createdAt: text('createdAt').default(sql`(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))`).notNull(),
+  userId: text("userId", { length: 255}).notNull().unique().references(() => users.id, { onDelete: "cascade"}),
+  modId: text("modId", { length: 255}).notNull().references(() => mods.id, { onDelete: "cascade"}),
+  teamId: text("teamId", { length: 255}).notNull().references(() => mods.id, { onDelete: "cascade"}),
+});
+
+export const membershipRelations = relations(memberships, ({ one }) => ({
+  user: one(users, {
+    fields: [memberships.userId],
+    references: [users.id]
+  }),
+  mod: one(mods, {
+    fields: [memberships.modId],
+    references: [mods.id]
+  }),
+  team: one(teams, {
+    fields: [memberships.teamId],
+    references: [teams.id]
+  }), 
 }));

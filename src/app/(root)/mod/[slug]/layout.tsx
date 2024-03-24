@@ -3,7 +3,7 @@ import InfoCard from './_components/info-card';
 import LinksCard from './_components/links-card';
 import MembersCard from './_components/members-card';
 import Navbar from './_components/navbar';
-import { getModBySlugWithOwnerWithLinks } from '@/core/persistence/mod';
+import { getModBySlugWithOwnerWithLinksWithMembers } from '@/core/persistence/mod';
 
 const ModPageLayout = async ({
   children,
@@ -12,8 +12,8 @@ const ModPageLayout = async ({
   children: React.ReactNode;
   params: { slug: string };
 }) => {
-  const mod = await getModBySlugWithOwnerWithLinks(params.slug);
-
+  const mod = await getModBySlugWithOwnerWithLinksWithMembers(params.slug);
+  
   if (!mod?.owner) {
     return <div className='w-full flex h-full justify-center items-center'>Mod not found</div>;
   }

@@ -157,3 +157,22 @@ export async function getModsByQueryTagWithOwnerWithFeatureTags(query?: string, 
     }
   });
 }
+
+export async function getModBySlugWithOwnerWithLinksWithMembers(slug: string) {
+  if (!slug) {
+    throw new Error("slug parameter is undefined");
+  }
+
+  return await db.query.mods.findFirst({
+    where: (mods, { eq }) => eq(mods.slug, slug),
+    with: {
+      owner: true,
+      links: true,
+      teamMembers: {
+        with: {
+          user: true
+        }
+      }
+    }
+  });
+}
