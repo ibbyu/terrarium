@@ -14,12 +14,12 @@ const Navbar = ({ slug } : Props) => {
   const pathname = usePathname();
   const DESCRIPTION_PATH = `/mod/${slug}`;
   const RELEASES_PATH = `/mod/${slug}/versions`;
-  const GALLERY_PATH = `/mod/${slug}/gallery`;
+  const GALLERY_PATH = `/mod/${slug}/images`;
   
   return (
     <div className='flex gap-2'>
       <Link href={DESCRIPTION_PATH} className={cn(buttonVariants({ variant: "link" }), "text-foreground", pathname === DESCRIPTION_PATH ? "underline" : "")}>Description</Link>
-      <Link href={GALLERY_PATH} className={cn(buttonVariants({ variant: "link" }), "text-foreground", pathname === GALLERY_PATH ? "underline" : "")}>Gallery</Link>
+      <Link href={GALLERY_PATH} className={cn(buttonVariants({ variant: "link" }), "text-foreground", pathname === GALLERY_PATH ? "underline" : "")}>Images</Link>
       <Link href={RELEASES_PATH} className={cn(buttonVariants({ variant: "link" }), "text-foreground", pathname === RELEASES_PATH ? "underline" : "")}>Versions</Link>
     </div>
   );

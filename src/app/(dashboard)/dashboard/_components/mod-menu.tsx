@@ -8,7 +8,8 @@ import {
   SettingsIcon,
   HomeIcon,
   TextIcon,
-  FileStackIcon
+  FileStackIcon,
+  ImagesIcon
 } from 'lucide-react';
 
 interface Props {
@@ -30,6 +31,12 @@ const ModMenu = ({ slug }: Props) => {
           <div className='flex gap-2 items-center'>
             <TextIcon className='text-foreground' size={18} />
             <span>Description</span>
+          </div>
+        </NavLink>
+        <NavLink href={`/dashboard/${slug}/images`} pathname={pathname}>
+          <div className='flex gap-2 items-center'>
+            <ImagesIcon className='text-foreground' size={18} />
+            <span>Images</span>
           </div>
         </NavLink>
         <NavLink href={`/dashboard/${slug}/versions`} pathname={pathname}>

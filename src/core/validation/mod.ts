@@ -33,3 +33,8 @@ export const updateModLinksSchema = z.object({
   wiki: z.string().url().optional().or(z.literal('')),
   discord: z.string().url().optional().or(z.literal(''))
 });
+
+export const uploadImageSchema = z.object({
+  title: z.string(),
+  imageUrl: z.string().url(),
+});

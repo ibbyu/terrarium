@@ -53,7 +53,7 @@ const UpdateModIconCard = ({ modId, icon }: Props) => {
       <CardContent className='flex items-center gap-10'>
         <ModIcon icon={currentIcon} className='w-32' />
         <UploadButton
-          endpoint="imageUploader"
+          endpoint="modIconUploader"
           onClientUploadComplete={(res) => {
             if (res[0]?.url) {
               void postClientUpload(res[0].url);

@@ -1,7 +1,7 @@
 import { db } from "@/server/db";
 import { mods } from "@/server/db/schema";
 import { eq } from "drizzle-orm";
-import { EnvironmentType } from "../entities/environment";
+import type { EnvironmentType } from "../entities/environment";
 
 export async function getModBySlug(slug: string) {
   if (!slug) {
@@ -173,6 +173,19 @@ export async function getModBySlugWithOwnerWithLinksWithMembers(slug: string) {
           user: true
         }
       }
+    }
+  });
+}
+
+export async function getModBySlugWithImages(slug: string) {
+  if (!slug) {
+    throw new Error("slug parameter is undefined");
+  }
+
+  return await db.query.mods.findFirst({
+    where: (mods, { eq }) => eq(mods.slug, slug),
+    with: {
+      images: true
     }
   });
 }

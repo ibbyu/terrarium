@@ -118,6 +118,7 @@ export const modRelations = relations(mods, ({ one, many }) => ({
   featureTags: many(featureTagOnMods),
   links: one(modLinks),
   teamMembers: many(memberships),
+  images: many(modImages)
 }));
 
 export const featureTags = createTable("featureTag", {
@@ -196,4 +197,20 @@ export const membershipRelations = relations(memberships, ({ one }) => ({
     fields: [memberships.teamId],
     references: [teams.id]
   }), 
+}));
+
+export const modImages = createTable("modImage", {
+  id: text("id", { length: 255 }).notNull().primaryKey(),
+  title: text("title", { length: 255 }),
+  createdAt: text('createdAt').default(sql`(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))`).notNull(),
+  updatedAt: text('updatedAt').default(sql`(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))`).notNull(),
+  modId: text("modId", { length: 255}).notNull().references(() => mods.id, { onDelete: "cascade"}),
+  index: int("index")
+});
+
+export const modImageRelations = relations(modImages, ({ one }) => ({
+  mod: one(mods, {
+    fields: [modImages.modId],
+    references: [mods.id]
+  }),
 }));
