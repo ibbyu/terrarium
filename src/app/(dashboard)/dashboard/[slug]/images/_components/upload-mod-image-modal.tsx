@@ -1,5 +1,5 @@
 "use client"
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Dialog,
   DialogContent,
@@ -15,8 +15,10 @@ interface Props {
 }
 
 const UploadModImageModal = ({ modId }: Props) => {
+  const [open, setOpen] = useState(false);
+
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button>Upload image</Button>
       </DialogTrigger>
@@ -24,7 +26,7 @@ const UploadModImageModal = ({ modId }: Props) => {
         <DialogHeader>
           <DialogTitle>Upload mod image</DialogTitle>
         </DialogHeader>
-        <UploadModImageForm modId={modId} />
+        <UploadModImageForm modId={modId} setOpen={setOpen} />
       </DialogContent>
     </Dialog>
   );

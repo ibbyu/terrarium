@@ -1,14 +1,14 @@
 "use client"
-import React from 'react';
-import { z } from "zod";
+import React, { useState } from 'react';
+import type { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-
+import Image from 'next/image';
+import { Loader2 } from 'lucide-react';
 import { Button } from "@/components/ui/button"
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -17,12 +17,17 @@ import {
 import { Input } from "@/components/ui/input"
 import { uploadImageSchema } from '@/core/validation/mod';
 import { UploadButton } from '@/lib/uploadthing';
+import { toast } from 'sonner';
+import { useRouter } from 'next/navigation';
 
 interface Props {
   modId: string;
+  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const UploadModImageForm = ({ modId }: Props) => {
+const UploadModImageForm = ({ modId, setOpen }: Props) => {
+  const router = useRouter();
+  const [loading, setLoading] = useState(false);
   const form = useForm<z.infer<typeof uploadImageSchema>>({
     resolver: zodResolver(uploadImageSchema),
     defaultValues: {
@@ -31,18 +36,50 @@ const UploadModImageForm = ({ modId }: Props) => {
     },
   });
 
-  const onSubmit = (values: z.infer<typeof uploadImageSchema>) => {
-    alert("hi")
+  const onSubmit = async (values: z.infer<typeof uploadImageSchema>) => {
+    setLoading(true);
+    try {
+      const response = await fetch(`/api/mods/${modId}/image`, {
+        method: "POST",
+        body: JSON.stringify(values)
+      });
+      
+      const { message } = await response.json() as { message: string };
+
+      if (response.ok) {
+        toast.success(message);
+        setOpen(false);
+        router.refresh();
+      }
+      else {
+        toast.error(message);
+      }
+    }
+    catch(e) {
+      console.error(e);
+      toast.error('Something went wrong');
+    }
+    finally {
+      setLoading(false);
+    }
   }
 
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+        {form.watch("imageUrl") && <div className='relative overflow-hidden aspect-video'>
+          <Image 
+            src={form.watch("imageUrl")}
+            alt="mod image preview"
+            fill
+            style={{objectFit: "cover"}}
+          />
+        </div>}
         <FormField
           control={form.control}
           name="imageUrl"
           render={() => (
-            <FormItem>
+            <FormItem className='pt-6'>
               <FormControl>
                 <UploadButton
                   endpoint="modImageUploader"
@@ -52,7 +89,8 @@ const UploadModImageForm = ({ modId }: Props) => {
                     }
                   }}
                   onUploadError={(error: Error) => {
-                    alert(`ERROR! ${error.message}`);
+                    console.error(error);
+                    toast.error("An error occurred uploading your image");
                   }}
                 />
               </FormControl>
@@ -73,7 +111,9 @@ const UploadModImageForm = ({ modId }: Props) => {
             </FormItem>
           )}
         />
-        <Button type="submit" disabled={!form.watch("title") || !form.watch("imageUrl")}>Submit</Button>
+        <div className='flex justify-end'>
+          <Button disabled={!form.watch("title") || !form.watch("imageUrl")}>{loading ? <Loader2 className='animate-spin' /> : "Save"}</Button>
+        </div>
       </form>
     </Form>
   );

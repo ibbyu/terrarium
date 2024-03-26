@@ -201,11 +201,11 @@ export const membershipRelations = relations(memberships, ({ one }) => ({
 
 export const modImages = createTable("modImage", {
   id: text("id", { length: 255 }).notNull().primaryKey(),
-  title: text("title", { length: 255 }),
+  title: text("title", { length: 255 }).notNull(),
   createdAt: text('createdAt').default(sql`(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))`).notNull(),
   updatedAt: text('updatedAt').default(sql`(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))`).notNull(),
   modId: text("modId", { length: 255}).notNull().references(() => mods.id, { onDelete: "cascade"}),
-  index: int("index")
+  url: text("url", { length: 255 }).notNull(),
 });
 
 export const modImageRelations = relations(modImages, ({ one }) => ({

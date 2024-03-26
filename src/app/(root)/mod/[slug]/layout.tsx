@@ -20,6 +20,7 @@ const ModPageLayout = async ({
 
   return (
     <div className='grid grid-cols-1 lg:grid-cols-8 gap-6 pt-16 lg:grid-rows-1'>
+      <Navbar slug={mod.slug} className='lg:hidden'/>
       <div className='lg:col-span-2 flex flex-col gap-4'>
         <InfoCard
           icon={mod.icon}
@@ -44,7 +45,7 @@ const ModPageLayout = async ({
         </div>
       </div>
       <div className='w-full lg:col-span-6 flex flex-col gap-4 lg:row-start-1'>
-        <Navbar slug={mod.slug} />
+        <Navbar slug={mod.slug} className='hidden lg:block'/>
         {children}
       </div>
     </div>
